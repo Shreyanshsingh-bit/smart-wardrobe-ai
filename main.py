@@ -9,13 +9,13 @@ ml_models = {}
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("⏳ Waking up the AI Engine...")
+    print("Waking up the AI Engine...")
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"🖥️  Hardware detected: Running on {device.upper()}")
+    print(f"Hardware detected: Running on {device.upper()}")
     ml_models["device"] = device
-    print("✅ AI Model engine structured! Ready for requests.")
+    print("AI Model engine structured! Ready for requests.")
     yield
-    print("🛑 Shutting down AI Engine and clearing memory...")
+    print("Shutting down AI Engine and clearing memory...")
     ml_models.clear()
 
 app = FastAPI(title="Smart Wardrobe AI Microservice", lifespan=lifespan)
@@ -29,7 +29,7 @@ async def process_tryon(
     user_image: UploadFile = File(...), 
     garment_image: UploadFile = File(...)
 ):
-    print(f"➡️ Received images: {user_image.filename} & {garment_image.filename}")
+    print(f"Received images: {user_image.filename} & {garment_image.filename}")
     
     try:
         
@@ -43,7 +43,7 @@ async def process_tryon(
         resized_user = user_pil.resize(target_size, Image.Resampling.LANCZOS)
         resized_garment = garment_pil.resize(target_size, Image.Resampling.LANCZOS)
         
-        print(f"📐 Success: Both images resized to {target_size}")
+        print(f"Success: Both images resized to {target_size}")
         return {
             "status": "success",
             "message": "Images successfully validated, parsed, and sized for the AI pipeline.",
@@ -52,7 +52,7 @@ async def process_tryon(
         }
         
     except Exception as e:
-        print(f"❌ Pipeline Error: {str(e)}")
+        print(f"Pipeline Error: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Failed to process images: {str(e)}")
 
 if __name__ == "__main__":
